@@ -16,6 +16,11 @@ var stringifyJSON = function(obj) {
 	} else if (obj.constructor === Array) {
 		return '[' + obj.map(stringifyJSON).join(",") + ']';
 	} else if (obj.constructor === Object) {
+		return ('{' + Object.keys(obj).map(function (k) {
+			if (typeof obj[k] !== "function" && obj[k] !== undefined) {
+				return '\"' + k + '\":' + stringifyJSON(obj[k]);
+			}
+		}) + '}').replace(/{,}/,'{}');
 	}
 
 };
